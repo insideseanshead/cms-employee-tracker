@@ -1,10 +1,11 @@
 // Dependencies
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-var consolelog = require("console.log")
+var consoletable = require("console.table");
+const { allowedNodeEnvironmentFlags } = require("process");
 
 // create the connection information for the sql database
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host: "localhost",
 
   // Your port; if not 3306
@@ -15,7 +16,7 @@ var connection = mysql.createConnection({
 
   // Your password
   password: "password",
-  database: "employee_dp"
+  database: "employee_db"
 });
 
 // connect to the mysql server and sql database
@@ -28,44 +29,155 @@ connection.connect(function(err) {
 // Function mainMenu
 // ==============================================
 // Inquire what the user wants to do.
-    // Add Departments, roles, employees.
-    // View departments, roles, emplyees.
-    // Update employee roles.
+function mainMenu() {
+    inquirer.prompt(
+    {
+        name: "choice",
+        type: "list",
+        message: "What would you like to do?",
+        choices: [
+            "Add department, role or employee",
+            "View departments, roles or employees",
+            "Update roles",
+            "Quit"
+        ]
+    }
+    ).then(function(response){ 
+        console.log(response);
+        switch (response.choice) {
+            case "Add department, role or employee":
+                addMenu();
+                break;
+
+            case "View departments, roles or employees":
+                viewMenu();
+                break;
+
+            case "Update roles":
+                updateRoles();
+                break;
+
+            case "Quit":
+                connection.end()
+                break;
+        }
+    })
+}
 
 // Inquirer ADD
-    // Department
-    // role
-    // employee
+function addMenu(){
+    inquirer.prompt(
+        {
+            name: "choice",
+            type: "list",
+            message: "Would you like to add a department, role or employee?",
+            choices: [
+                "Department",
+                "Role",
+                "Employee",
+                "Return to main menu"
+            ]
+        }
+    ).then(function(response){
+        console.log(response);
+        switch (response.choice) {
+            case "Department":
+                addDepartment();
+                break;
+                
+            case "Role":
+                addRole();
+                break;
+
+            case "Employee":
+                addEmployee();
+                break;
+
+            case "Return to main menu":
+                mainMenu();
+                break;
+        }
+    })
+}
 
 // Inquirer View 
-    // Departments
-    // roles
-    // employees
+function viewMenu(){
+    inquirer.prompt(
+        {
+            name: "choice",
+            type: "list",
+            message: "Would you like to view a department, role or employee?",
+            choices: [
+                "Department",
+                "Role",
+                "Employee",
+                "Return to main menu"
+            ]
+        }
+    ).then(function(response){
+        console.log(response);
+        switch (response.choice) {
+            case "Department":
+                viewDepartment();
+                break;
+                
+            case "Role":
+                viewRole();
+                break;
 
-// Inquirer Update
-    // employee roles
+            case "Employee":
+                viewEmployee();
+                break;
 
-
+            case "Return to main menu":
+                mainMenu();
+                break;
+        }
+    })
+}
+    
 // Function ADD
 // ===============================================
 // function addDepartment()
-
-
+function addDepartment(){
+    console.log('add department');
+    mainMenu();
+}
 
 // function addRole()
-
-
+function addRole(){
+    console.log('add role')
+    mainMenu();
+}
 
 // function addEmployee()
-
-
+function addEmployee(){
+    console.log('add employee')
+    mainMenu();
+}
 
 // Function View
 // ===============================================
 // function view()
+function viewDepartment(){
+    console.log('view department')
+    mainMenu();
+}
 
+function viewRole(){
+    console.log('view roles')
+    mainMenu();
+}
 
+function viewEmployee(){
+    console.log('view employees')
+    mainMenu();
+}
 
-// Function UPDATE
+// Function UPDATE Role
 // ===============================================
-// function update()
+
+function updateRoles(){
+    console.log('update role')
+    mainMenu();
+}
