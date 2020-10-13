@@ -1,3 +1,4 @@
+// Dependencies
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var consolelog = require("console.log")
@@ -21,5 +22,50 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   // run the start function after the connection is made to prompt the user
-  start();
+  mainMenu();
 });
+
+// Function mainMenu
+// ==============================================
+// Inquire what the user wants to do.
+    // Add Departments, roles, employees.
+    // View departments, roles, emplyees.
+    // Update employee roles.
+
+// Inquirer ADD
+    // Department
+    // role
+    // employee
+
+// Inquirer View 
+    // Departments
+    // roles
+    // employees
+
+// Inquirer Update
+    // employee roles
+
+
+// Function ADD
+// ===============================================
+// function addDepartment()
+
+
+
+// function addRole()
+
+
+
+// function addEmployee()
+
+
+
+// Function View
+// ===============================================
+// function view()
+
+
+
+// Function UPDATE
+// ===============================================
+// function update()
