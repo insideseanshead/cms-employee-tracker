@@ -1,7 +1,7 @@
 // Dependencies
-var mysql = require("mysql");
-var inquirer = require("inquirer");
-var consoletable = require("console.table");
+const mysql = require("mysql");
+const inquirer = require("inquirer");
+require("console.table");
 const { allowedNodeEnvironmentFlags } = require("process");
 
 // create the connection information for the sql database
@@ -158,15 +158,24 @@ function addEmployee(){
 
 // Function View
 // ===============================================
-// function view()
 function viewDepartment(){
-    console.log('view department')
-    mainMenu();
+    connection.query("SELECT * FROM employee_db.department"), function(err,data){
+        if(err){
+            throw err;
+        }
+        console.table(data);
+        mainMenu();
+    }
 }
 
 function viewRole(){
-    console.log('view roles')
-    mainMenu();
+    connection.query("SELECT * FROM employee_db.role"), function(err,data){
+        if(err){
+            throw err;
+        }
+        console.table(data);
+        mainMenu();
+    }
 }
 
 function viewEmployee(){
