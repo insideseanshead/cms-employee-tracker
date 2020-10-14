@@ -118,15 +118,33 @@ function viewMenu(){
         console.log(response);
         switch (response.choice) {
             case "Department":
-                viewDepartment();
+                connection.query("SELECT * FROM employee_db.department", function(err,data) {
+                    if (err) {
+                        throw err;
+                    }
+                    console.table(data);
+                    mainMenu();
+                })
                 break;
                 
             case "Role":
-                viewRole();
+                connection.query("SELECT * FROM employee_db.role", function(err,data){
+                    if(err){
+                        throw err;
+                    }
+                    console.table(data);
+                    mainMenu();
+                })
                 break;
 
             case "Employee":
-                viewEmployee();
+                connection.query("SELECT * FROM employee_db.employee", function(err,data){
+                    if(err){
+                        throw err;
+                    }
+                    console.table(data);
+                    mainMenu();
+                })
                 break;
 
             case "Return to main menu":
@@ -140,8 +158,16 @@ function viewMenu(){
 // ===============================================
 // function addDepartment()
 function addDepartment(){
-    console.log('add department');
-    mainMenu();
+    inquirer.prompt({
+        name: 'name',
+        type: 'input',
+        message: 'What would you like to name your department?'
+    }).then(function (response) {
+        connection.query("INSERT INTO department SET ?", { name: response.name }, function (err) {
+                if (err) throw err;
+                mainMenu();
+            })
+    })
 }
 
 // function addRole()
@@ -156,32 +182,6 @@ function addEmployee(){
     mainMenu();
 }
 
-// Function View
-// ===============================================
-function viewDepartment(){
-    connection.query("SELECT * FROM employee_db.department"), function(err,data){
-        if(err){
-            throw err;
-        }
-        console.table(data);
-        mainMenu();
-    }
-}
-
-function viewRole(){
-    connection.query("SELECT * FROM employee_db.role"), function(err,data){
-        if(err){
-            throw err;
-        }
-        console.table(data);
-        mainMenu();
-    }
-}
-
-function viewEmployee(){
-    console.log('view employees')
-    mainMenu();
-}
 
 // Function UPDATE Role
 // ===============================================
