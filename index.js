@@ -2,7 +2,7 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 require("console.table");
-const { allowedNodeEnvironmentFlags } = require("process");
+const { allowedNodeEnvironmentFlags, title } = require("process");
 
 // create the connection information for the sql database
 const connection = mysql.createConnection({
@@ -128,7 +128,7 @@ function viewMenu(){
                 break;
                 
             case "Role":
-                connection.query("SELECT * FROM employee_db.role", function(err,data){
+                connection.query("SELECT role.title, department.name, role.salary FROM department INNER JOIN role ON department.id=role.department_id", function(err,data){
                     if(err){
                         throw err;
                     }
@@ -138,7 +138,7 @@ function viewMenu(){
                 break;
 
             case "Employee":
-                connection.query("SELECT * FROM employee_db.employee", function(err,data){
+                connection.query("SELECT employee.id,employee.first_name,employee.last_name,role.title,department.name FROM employee LEFT JOIN role  ON employee.role_id=role.id LEFT JOIN department ON role.department_id=department.id", function(err,data){
                     if(err){
                         throw err;
                     }
@@ -172,14 +172,63 @@ function addDepartment(){
 
 // function addRole()
 function addRole(){
-    console.log('add role')
-    mainMenu();
+    inquirer.prompt([
+        {
+            name: 'title',
+            type: 'input',
+            message: 'What is the title of your role?'
+        },
+        {
+            name: 'salary',
+            type: 'input',
+            message: 'What is the salary for this roll?'
+        },
+        {
+            name: 'departmentID',
+            type: 'input',
+            message: 'What is the department ID number for this role?'
+        }
+    ]).then(function (response) {
+        connection.query("INSERT INTO role SET ?", {
+            title: response.title,
+            salary: response.salary,
+            department_id: response.departmentID
+        },function (err) {
+            if(err) throw err;
+            mainMenu();
+        })
+    })
+    
 }
 
 // function addEmployee()
 function addEmployee(){
-    console.log('add employee')
-    mainMenu();
+    inquirer.prompt([
+        {
+            name: 'firstName',
+            type: 'input',
+            message: 'What is your employees first name?'
+        },
+        {
+            name: 'lastName',
+            type: 'input',
+            message: 'What is your employees last name?' 
+        },
+        {
+            name: 'roleID',
+            type: 'input',
+            message: 'What is the role ID number?'
+        }
+    ]).then(function(response){
+        connection.query("INSERT INTO employee SET?", {
+            first_name: response.firstName,
+            last_name: response.lastName,
+            role_id: response.roleID
+        }, function(err){
+            if(err) throw err;
+            mainMenu()
+        })
+    })
 }
 
 
